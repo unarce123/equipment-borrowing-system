@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Request Equipment</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button class="bg-green-500 text-white px-3 py-1">
+        Submit
+    </button>
+</form>
+
+{% endblock %}

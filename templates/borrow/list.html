@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-2xl font-bold">Borrow Requests</h1>
+
+<a href="/borrow/create/" class="bg-blue-500 text-white px-3 py-1 rounded">
+    Request Equipment
+</a>
+
+<table class="w-full mt-4 bg-white">
+    <tr>
+        <th>User</th>
+        <th>Equipment</th>
+        <th>Qty</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for r in requests %}
+    <tr>
+        <td>{{ r.user.username }}</td>
+        <td>{{ r.equipment.name }}</td>
+        <td>{{ r.quantity }}</td>
+        <td>{{ r.status }}</td>
+        <td>
+
+            {% if user.is_superuser %}
+                <a href="/borrow/approve/{{ r.id }}/">Approve</a>
+                <a href="/borrow/reject/{{ r.id }}/">Reject</a>
+            {% endif %}
+
+            <a href="/borrow/return/{{ r.id }}/">Return</a>
+
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

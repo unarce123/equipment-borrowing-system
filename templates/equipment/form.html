@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-xl font-bold mb-4">Equipment Form</h1>
+
+<form method="POST" class="bg-white p-4 shadow rounded">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button class="bg-green-500 text-white px-4 py-2 rounded">
+        Save
+    </button>
+</form>
+
+{% endblock %}
