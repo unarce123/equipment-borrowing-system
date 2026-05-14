@@ -2,28 +2,104 @@
 
 {% block content %}
 
-<h1 class="text-2xl font-bold mb-6">Dashboard</h1>
+<div class="flex justify-between items-center mb-8">
 
-<div class="grid grid-cols-4 gap-4">
+    <div>
+        <h1 class="text-4xl font-bold text-gray-800">
+            Dashboard
+        </h1>
 
-    <div class="bg-white p-4 shadow rounded">
-        <h2 class="text-gray-500">Total Equipment</h2>
-        <p class="text-2xl font-bold">{{ total_equipment }}</p>
+        <p class="text-gray-500 mt-2">
+            Monitor equipment inventory and borrowing activities.
+        </p>
     </div>
 
-    <div class="bg-white p-4 shadow rounded">
-        <h2 class="text-gray-500">Available</h2>
-        <p class="text-2xl font-bold">{{ available_equipment }}</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    <!-- TOTAL EQUIPMENT -->
+    <div class="bg-white rounded-3xl shadow-lg p-6 hover:shadow-2xl hover:-translate-y-1 transition duration-300">
+
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-gray-500 text-sm uppercase font-semibold">
+                    Total Equipment
+                </h2>
+
+                <p class="text-4xl font-bold mt-3 text-blue-600">
+                    {{ total_equipment }}
+                </p>
+            </div>
+
+            <div class="text-5xl">
+                📦
+            </div>
+        </div>
+
     </div>
 
-    <div class="bg-white p-4 shadow rounded">
-        <h2 class="text-gray-500">Pending Requests</h2>
-        <p class="text-2xl font-bold">{{ pending_requests }}</p>
+    <!-- PENDING -->
+    <div class="bg-white rounded-3xl shadow-lg p-6 hover:shadow-2xl hover:-translate-y-1 transition duration-300">
+
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-gray-500 text-sm uppercase font-semibold">
+                    Pending Requests
+                </h2>
+
+                <p class="text-4xl font-bold mt-3 text-yellow-500">
+                    {{ pending_requests }}
+                </p>
+            </div>
+
+            <div class="text-5xl">
+                ⏳
+            </div>
+        </div>
+
     </div>
 
-    <div class="bg-white p-4 shadow rounded">
-        <h2 class="text-gray-500">Approved</h2>
-        <p class="text-2xl font-bold">{{ approved_requests }}</p>
+    <!-- APPROVED -->
+    <div class="bg-white rounded-3xl shadow-lg p-6 hover:shadow-2xl hover:-translate-y-1 transition duration-300">
+
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-gray-500 text-sm uppercase font-semibold">
+                    Approved
+                </h2>
+
+                <p class="text-4xl font-bold mt-3 text-green-500">
+                    {{ approved_requests }}
+                </p>
+            </div>
+
+            <div class="text-5xl">
+                ✅
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RETURNED -->
+    <div class="bg-white rounded-3xl shadow-lg p-6 hover:shadow-2xl hover:-translate-y-1 transition duration-300">
+
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-gray-500 text-sm uppercase font-semibold">
+                    Returned
+                </h2>
+
+                <p class="text-4xl font-bold mt-3 text-purple-500">
+                    {{ returned_requests }}
+                </p>
+            </div>
+
+            <div class="text-5xl">
+                🔄
+            </div>
+        </div>
+
     </div>
 
 </div>

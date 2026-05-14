@@ -1,39 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+<body class="bg-gradient-to-br from-blue-600 to-indigo-800 min-h-screen flex items-center justify-center">
 
-    <div class="bg-white p-8 rounded shadow-md w-96">
+<div class="w-full max-w-md">
 
-        <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+    <!-- TOAST MESSAGE -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="toast-message mb-4 bg-red-500 text-white px-5 py-4 rounded-2xl shadow-lg text-center">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="mb-3 text-red-500 text-sm">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+    <div class="bg-white p-10 rounded-3xl shadow-2xl">
 
-        <form method="POST">
+        <div class="text-center mb-8">
+
+            <div class="text-5xl mb-4">
+                📦
+            </div>
+
+            <h1 class="text-3xl font-bold text-gray-800">
+                Welcome Back
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                Equipment Borrowing System
+            </p>
+
+        </div>
+
+        <form method="POST" class="space-y-5">
+
             {% csrf_token %}
 
-            <input type="text" name="username" placeholder="Username"
-                class="w-full p-2 border mb-3 rounded">
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-700">
+                    Username
+                </label>
 
-            <input type="password" name="password" placeholder="Password"
-                class="w-full p-2 border mb-3 rounded">
+                <input type="text"
+                       name="username"
+                       class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
 
-            <button class="w-full bg-blue-500 text-white p-2 rounded">
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-700">
+                    Password
+                </label>
+
+                <input type="password"
+                       name="password"
+                       class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <button
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold shadow-lg transition duration-200">
                 Login
             </button>
+
         </form>
 
     </div>
+
+</div>
+
+<script>
+    setTimeout(() => {
+
+        const messages =
+            document.querySelectorAll('.toast-message');
+
+        messages.forEach(msg => {
+
+            msg.style.transition = '0.5s';
+            msg.style.opacity = '0';
+
+            setTimeout(() => {
+                msg.remove();
+            }, 500);
+
+        });
+
+    }, 3000);
+</script>
 
 </body>
 </html>

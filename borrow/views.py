@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages   # ✅ ADD THIS
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib import messages
 
 from .models import BorrowRequest
 from .forms import BorrowRequestForm
 from equipment.models import Equipment
+from accounts.utils import is_admin
 
 
 @login_required
@@ -27,16 +28,15 @@ def create_borrow(request):
         borrow.status = 'pending'
         borrow.save()
 
-        # ✅ PUT IT HERE (after save, before redirect)
         messages.success(request, "Borrow request submitted successfully")
-
         return redirect('borrow_list')
 
     return render(request, 'borrow/form.html', {'form': form})
 
 
-# 🔥 APPROVE = reduce stock
+# ADMIN ONLY
 @login_required
+@user_passes_test(is_admin)
 def approve_borrow(request, pk):
     borrow = get_object_or_404(BorrowRequest, pk=pk)
 
@@ -55,8 +55,9 @@ def approve_borrow(request, pk):
     return redirect('borrow_list')
 
 
-# ❌ REJECT = no stock change
+# ADMIN ONLY
 @login_required
+@user_passes_test(is_admin)
 def reject_borrow(request, pk):
     borrow = get_object_or_404(BorrowRequest, pk=pk)
 
@@ -69,14 +70,12 @@ def reject_borrow(request, pk):
     return redirect('borrow_list')
 
 
-# 🔄 RETURN = restore stock
 @login_required
 def return_borrow(request, pk):
     borrow = get_object_or_404(BorrowRequest, pk=pk)
 
     if borrow.status == 'approved':
         equipment = borrow.equipment
-
         equipment.quantity += borrow.quantity
         equipment.save()
 

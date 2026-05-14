@@ -2,48 +2,145 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Equipment System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Borrowing System</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
+
+<body class="bg-gray-100 min-h-screen">
 
 <div class="flex">
 
     <!-- SIDEBAR -->
-    <div class="w-64 bg-white h-screen shadow-md p-4">
-        <h2 class="text-xl font-bold mb-6">System</h2>
+    <aside class="w-64 bg-gray-900 text-white min-h-screen fixed shadow-2xl">
 
-        <a href="/dashboard/" class="block py-2">Dashboard</a>
-        <a href="/equipment/" class="block py-2">Equipment</a>
-        <a href="/borrow/" class="block py-2">Borrow Requests</a>
+        <div class="p-6 border-b border-gray-700">
 
-        <hr class="my-4">
+            <div class="flex items-center gap-3">
 
-        {% if user.is_authenticated %}
-            <a href="/accounts/logout/" class="text-red-500">Logout</a>
-        {% else %}
-            <a href="/accounts/login/" class="text-blue-500">Login</a>
-        {% endif %}
-    </div>
+                <div class="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-2xl">
+                    📦
+                </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="flex-1 p-6">
-        {% block content %}
-        {% endblock %}
-    </div>
+                <div>
+                    <h1 class="text-xl font-bold">Equipment System</h1>
+                    <p class="text-sm text-gray-400">Borrowing Management</p>
+                </div>
 
-</div>
+            </div>
 
-<!-- MESSAGES -->
-{% if messages %}
-<div class="fixed top-5 right-5 space-y-2">
-    {% for message in messages %}
-        <div class="bg-green-500 text-white px-4 py-2 rounded shadow">
-            {{ message }}
         </div>
-    {% endfor %}
+
+        <nav class="mt-6 px-4 space-y-3">
+
+            <a href="/" class="block px-4 py-3 rounded-xl hover:bg-gray-800">
+                📊 Dashboard
+            </a>
+
+            <a href="/equipment/" class="block px-4 py-3 rounded-xl hover:bg-gray-800">
+                📦 Equipment
+            </a>
+
+            <a href="/borrow/" class="block px-4 py-3 rounded-xl hover:bg-gray-800">
+                📄 Borrow Requests
+            </a>
+
+            <!-- SAFE ADMIN CHECK -->
+            {% if request.user.is_authenticated and request.user.is_superuser %}
+            <a href="/admin/" class="block px-4 py-3 rounded-xl hover:bg-gray-800">
+                ⚙️ Admin Panel
+            </a>
+            {% endif %}
+
+            <a href="/accounts/logout/"
+               class="block px-4 py-3 rounded-xl bg-red-500 hover:bg-red-600 mt-10 text-center font-semibold">
+                Logout
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="ml-64 w-full min-h-screen">
+
+        <header class="bg-white shadow px-8 py-4 flex justify-between items-center">
+
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800">
+                    Equipment Borrowing System
+                </h2>
+                <p class="text-sm text-gray-500">
+                    Manage inventory and borrowing requests
+                </p>
+            </div>
+
+            <div class="flex items-center gap-4">
+
+                <div class="text-right">
+
+                    <p class="font-semibold text-gray-700">
+                        {{ request.user.username }}
+                    </p>
+
+                    <!-- SAFE ROLE DISPLAY -->
+                    <p class="text-sm text-gray-500">
+
+                        {% if request.user.is_authenticated %}
+                            {% if request.user.is_superuser %}
+                                Admin
+                            {% elif request.user.userprofile.role %}
+                                {{ request.user.userprofile.role|title }}
+                            {% else %}
+                                User
+                            {% endif %}
+                        {% else %}
+                            Guest
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+                <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+                    {{ request.user.username|first|upper }}
+                </div>
+
+            </div>
+
+        </header>
+
+        <div class="p-8">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="toast-message mb-4 bg-green-500 text-white px-5 py-4 rounded-2xl shadow-lg">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+
+        </div>
+
+        <footer class="text-center text-gray-500 py-6 text-sm">
+            Equipment Borrowing System © 2026
+        </footer>
+
+    </main>
+
 </div>
-{% endif %}
+
+<script>
+setTimeout(() => {
+    document.querySelectorAll('.toast-message').forEach(msg => {
+        msg.style.opacity = '0';
+        setTimeout(() => msg.remove(), 500);
+    });
+}, 3000);
+</script>
 
 </body>
 </html>

@@ -2,15 +2,49 @@
 
 {% block content %}
 
-<h1>Request Equipment</h1>
+<div class="max-w-2xl mx-auto">
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
+    <div class="bg-white rounded-3xl shadow-lg p-8">
 
-    <button class="bg-green-500 text-white px-3 py-1">
-        Submit
-    </button>
-</form>
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">
+                Request Equipment
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                Submit a borrowing request for available equipment.
+            </p>
+        </div>
+
+        <form method="POST" class="space-y-6">
+
+            {% csrf_token %}
+
+            <div>
+                <label class="block mb-2 font-semibold text-gray-700">
+                    Select Equipment
+                </label>
+
+                {{ form.equipment }}
+            </div>
+
+            <div>
+                <label class="block mb-2 font-semibold text-gray-700">
+                    Quantity
+                </label>
+
+                {{ form.quantity }}
+            </div>
+
+            <button
+                class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow transition w-full">
+                Submit Request
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}

@@ -4,22 +4,25 @@ Django settings for equipment_system project.
 
 from pathlib import Path
 import os
-import dj_database_url
 
-# BASE DIR
+# BASE DIRECTORY
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY
-SECRET_KEY = 'your-secret-key-here'  # move to env in deployment
+SECRET_KEY = 'django-insecure-your-secret-key'
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
-# APPLICATIONS
+# INSTALLED APPS
 INSTALLED_APPS = [
+
+    # ⭐ ADMIN THEME (ADD THIS FIRST)
+    'jazzmin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -27,7 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # apps
+    # your apps
     'accounts',
     'core',
     'equipment',
@@ -38,8 +41,6 @@ INSTALLED_APPS = [
 # MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -74,11 +75,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'equipment_system.wsgi.application'
 
 
-# DATABASE (LOCAL MYSQL / RENDER POSTGRES READY)
+# DATABASE (MYSQL - LOCAL)
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'equipment_system',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
 }
 
 
@@ -105,12 +111,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-
-# WHITE NOISE (for deployment)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 
 # DEFAULT PRIMARY KEY
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -120,3 +120,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+
+# 🎨 JAZZMIN ADMIN THEME SETTINGS (NEW)
+JAZZMIN_SETTINGS = {
+    "site_title": "Equipment System Admin",
+    "site_header": "Equipment Management",
+    "site_brand": "Equipment System",
+    "welcome_sign": "Welcome Admin 👋",
+    "copyright": "Equipment Borrowing System",
+
+    "show_sidebar": True,
+    "navigation_expanded": True,
+}
+
+JAZZMIN_SETTINGS["custom_css"] = "admin/custom_admin.css"
