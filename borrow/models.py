@@ -1,12 +1,10 @@
 from django.db import models
-
-# Create your models here.
-
-from django.db import models
 from django.contrib.auth.models import User
 from equipment.models import Equipment
 
+
 class BorrowRequest(models.Model):
+
     STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('approved', 'Approved'),
@@ -15,9 +13,26 @@ class BorrowRequest(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
+
+    equipment = models.ForeignKey(
+        Equipment,
+        on_delete=models.CASCADE
+    )
+
     quantity = models.IntegerField(default=1)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+
+    # ✅ NEW
+    borrow_date = models.DateField()
+
+    # ✅ NEW
+    return_date = models.DateField()
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+
     date_requested = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

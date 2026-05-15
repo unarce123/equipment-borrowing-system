@@ -6,38 +6,76 @@
 
     <div class="bg-white rounded-3xl shadow-lg p-8">
 
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">
-                Request Equipment
-            </h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">
+            Request Equipment
+        </h1>
 
-            <p class="text-gray-500 mt-2">
-                Submit a borrowing request for available equipment.
-            </p>
-        </div>
-
-        <form method="POST" class="space-y-6">
+        <form method="POST" class="space-y-5">
 
             {% csrf_token %}
 
+            <!-- EQUIPMENT -->
             <div>
                 <label class="block mb-2 font-semibold text-gray-700">
-                    Select Equipment
+                    Equipment
                 </label>
 
                 {{ form.equipment }}
+
+                {% if form.equipment.errors %}
+                    <div class="mt-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl">
+                        {{ form.equipment.errors }}
+                    </div>
+                {% endif %}
             </div>
 
+            <!-- QUANTITY -->
             <div>
                 <label class="block mb-2 font-semibold text-gray-700">
                     Quantity
                 </label>
 
                 {{ form.quantity }}
+
+                {% if form.quantity.errors %}
+                    <div class="mt-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl">
+                        {{ form.quantity.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- BORROW DATE -->
+            <div>
+                <label class="block mb-2 font-semibold text-gray-700">
+                    Borrow Date
+                </label>
+
+                {{ form.borrow_date }}
+
+                {% if form.borrow_date.errors %}
+                    <div class="mt-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl">
+                        {{ form.borrow_date.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- RETURN DATE -->
+            <div>
+                <label class="block mb-2 font-semibold text-gray-700">
+                    Return Date
+                </label>
+
+                {{ form.return_date }}
+
+                {% if form.return_date.errors %}
+                    <div class="mt-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl">
+                        {{ form.return_date.errors }}
+                    </div>
+                {% endif %}
             </div>
 
             <button
-                class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow transition w-full">
+                class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow transition">
                 Submit Request
             </button>
 

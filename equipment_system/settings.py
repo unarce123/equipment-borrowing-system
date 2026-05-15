@@ -20,7 +20,7 @@ ALLOWED_HOSTS = []
 # INSTALLED APPS
 INSTALLED_APPS = [
 
-    # ⭐ ADMIN THEME (ADD THIS FIRST)
+    # ⭐ ADMIN THEME
     'jazzmin',
 
     'django.contrib.admin',
@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # your apps
+    # YOUR APPS
     'accounts',
     'core',
     'equipment',
@@ -104,12 +104,22 @@ USE_I18N = True
 USE_TZ = True
 
 
-# STATIC FILES
+# STATIC FILES (CLEAN FIX)
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+# STATIC FILES (CLEAN FIX)
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+# ✅ ADD THIS (REQUIRED FOR collectstatic)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # DEFAULT PRIMARY KEY
@@ -122,7 +132,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
-# 🎨 JAZZMIN ADMIN THEME SETTINGS (NEW)
+# 🎨 JAZZMIN SETTINGS
 JAZZMIN_SETTINGS = {
     "site_title": "Equipment System Admin",
     "site_header": "Equipment Management",
@@ -133,5 +143,3 @@ JAZZMIN_SETTINGS = {
     "show_sidebar": True,
     "navigation_expanded": True,
 }
-
-JAZZMIN_SETTINGS["custom_css"] = "admin/custom_admin.css"

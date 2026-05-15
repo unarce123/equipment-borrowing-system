@@ -2,26 +2,39 @@ from django import forms
 from .models import BorrowRequest
 
 
-INPUT_CLASS = (
-    'w-full border border-gray-300 rounded-xl p-3 '
-    'focus:ring-2 focus:ring-blue-500 focus:outline-none'
-)
-
-
 class BorrowRequestForm(forms.ModelForm):
 
     class Meta:
         model = BorrowRequest
-        fields = ['equipment', 'quantity']
+
+        fields = [
+            'equipment',
+            'quantity',
+            'borrow_date',
+            'return_date',
+        ]
 
         widgets = {
+            'borrow_date': forms.DateInput(
+                attrs={'type': 'date'}
+            ),
 
-            'equipment': forms.Select(attrs={
-                'class': INPUT_CLASS,
-            }),
-
-            'quantity': forms.NumberInput(attrs={
-                'class': INPUT_CLASS,
-                'placeholder': 'Enter quantity'
-            }),
+            'return_date': forms.DateInput(
+                attrs={'type': 'date'}
+            ),
         }
+
+    # ✅ VALIDATE QUANTITY
+    def clean_quantity(self):
+
+        quantity = self.cleaned_data.get('quantity')
+
+        equipment = self.cleaned_data.get('equipment')
+
+        if equipment and quantity > equipment.quantity:
+
+            raise forms.ValidationError(
+                f"Only {equipment.quantity} equipment available."
+            )
+
+        return quantity

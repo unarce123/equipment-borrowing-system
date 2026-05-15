@@ -1,0 +1,89 @@
+/* =========================
+   GLOBAL THEME SYSTEM (FIXED)
+========================= */
+
+body {
+    background-color: #f3f4f6;
+    color: #111827;
+}
+
+/* DARK ROOT */
+html.dark body {
+    background-color: #0b1220;
+    color: #e5e7eb;
+}
+
+/* =========================
+   BACKGROUND FIX
+========================= */
+
+html.dark .bg-white,
+html.dark .bg-gray-100,
+html.dark .bg-gray-50 {
+    background-color: #1e293b !important;
+}
+
+/* SIDEBAR */
+html.dark aside {
+    background-color: #0f172a !important;
+}
+
+/* HEADER */
+html.dark header {
+    background-color: #1e293b !important;
+}
+
+/* TEXT */
+html.dark .text-gray-800,
+html.dark .text-gray-700,
+html.dark .text-gray-600 {
+    color: #e5e7eb !important;
+}
+
+html.dark .text-gray-500 {
+    color: #9ca3af !important;
+}
+
+/* TABLE BASE */
+html.dark table {
+    color: #e5e7eb !important;
+    border-color: #334155 !important;
+}
+
+/* TABLE HEAD */
+html.dark thead {
+    background-color: #1f2937 !important;
+}
+
+html.dark th {
+    color: #e5e7eb !important;
+}
+
+/* TABLE CELLS */
+html.dark td {
+    color: #e5e7eb !important;
+}
+
+/* ROW HOVER (SAFE: excludes header) */
+html.dark tbody tr:hover {
+    background-color: #334155 !important;
+}
+
+/* FORCE REMOVE TAILWIND LIGHT HOVER */
+html.dark .hover\:bg-gray-50:hover,
+html.dark .hover\:bg-gray-100:hover {
+    background-color: #334155 !important;
+}
+
+/* SHADOW FIX */
+html.dark .shadow,
+html.dark .shadow-lg,
+html.dark .shadow-2xl {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4) !important;
+}
+
+/* TOAST */
+html.dark .toast-message {
+    background-color: #1e293b !important;
+    color: #e5e7eb !important;
+}

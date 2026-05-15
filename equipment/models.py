@@ -29,15 +29,22 @@ class Equipment(models.Model):
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        # DO NOT override damaged status
+    # --------------------------
+    # AUTO SYNC STATUS
+    # --------------------------
+    def update_status(self):
         if self.status != 'damaged':
-            if self.quantity <= 0:
-                self.status = 'borrowed'
-            else:
-                self.status = 'available'
+            self.status = 'borrowed' if self.quantity <= 0 else 'available'
 
+    def save(self, *args, **kwargs):
+        # SAVE FIRST
         super().save(*args, **kwargs)
+
+        # THEN SYNC STATUS
+        self.update_status()
+
+        # SAVE UPDATED STATUS ONLY IF NEEDED
+        super().save(update_fields=['status'])
 
     def __str__(self):
         return self.name

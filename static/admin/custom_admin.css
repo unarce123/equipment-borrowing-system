@@ -65,3 +65,67 @@
         margin: 20px auto !important;
     }
 }
+
+
+/* =========================
+   FIX ADMIN RECENT ACTIONS + AUTO FIT
+========================= */
+
+/* Keep tables stable */
+#content-main table {
+    width: 100% !important;
+    table-layout: fixed !important;
+}
+
+/* Table cells */
+#content-main td,
+#content-main th {
+
+    padding: 10px 12px !important;
+
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+
+    vertical-align: top !important;
+}
+
+/* Safe links */
+#content-main a {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+}
+
+/* Recent actions container */
+.dashboard #content-related .module {
+    overflow: hidden !important;
+}
+
+/* Recent actions list */
+.dashboard .actionlist {
+    padding-left: 0 !important;
+}
+
+/* Each action item */
+.dashboard .actionlist li {
+
+    width: 100% !important;
+
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+
+    line-height: 1.5em !important;
+    margin-bottom: 10px !important;
+}
+
+/* Links auto fit */
+.dashboard .actionlist a {
+
+    display: inline !important;
+
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+}
