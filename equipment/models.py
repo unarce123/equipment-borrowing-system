@@ -7,6 +7,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
 
 class Equipment(models.Model):
 
@@ -29,22 +33,18 @@ class Equipment(models.Model):
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # --------------------------
-    # AUTO SYNC STATUS
-    # --------------------------
     def update_status(self):
         if self.status != 'damaged':
             self.status = 'borrowed' if self.quantity <= 0 else 'available'
 
     def save(self, *args, **kwargs):
-        # SAVE FIRST
         super().save(*args, **kwargs)
-
-        # THEN SYNC STATUS
         self.update_status()
-
-        # SAVE UPDATED STATUS ONLY IF NEEDED
         super().save(update_fields=['status'])
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Equipment"
+        verbose_name_plural = "Equipment Items"

@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,166 +9,111 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- THEME SYSTEM -->
-    <link rel="stylesheet" href="/static/css/theme.css">
-    <script src="/static/js/theme.js"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: "#1F3A5F",
+                    secondary: "#2D6A4F",
+                    accent: "#F4A261",
+                    surface: "#FFFFFF",
+                    dark: "#1B1F24",
+                    muted: "#6B7280",
+                    danger: "#E63946",
+                    warning: "#F4A261",
+                    success: "#2A9D8F",
+                    light: "#F7F9FC"
+                }
+            }
+        }
+    }
+    </script>
 </head>
 
-<!-- IMPORTANT: removed bg-gray-100 so dark mode works properly -->
-<body class="min-h-screen">
+<body class="min-h-screen bg-light text-dark">
 
 <div class="flex">
 
     <!-- SIDEBAR -->
-    <aside class="w-64 bg-gray-900 text-white min-h-screen fixed shadow-2xl">
-
-        <div class="p-6 border-b border-gray-700">
-            <div class="flex items-center gap-3">
-
-                <div class="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-2xl">
-                    📦
-                </div>
-
-                <div>
-                    <h1 class="text-xl font-bold">Equipment System</h1>
-                    <p class="text-sm text-gray-400">Borrowing Management</p>
-                </div>
-
-            </div>
+    <aside class="w-64 bg-primary text-white min-h-screen fixed shadow-2xl">
+        <div class="p-6 border-b border-white/10">
+            <h1 class="text-xl font-bold">Equipment System</h1>
+            <p class="text-sm text-gray-300">Borrowing Management</p>
         </div>
 
-        <nav class="mt-6 px-4 space-y-3">
+        <nav class="mt-6 px-4 space-y-2">
 
-            <a href="/" class="block px-4 py-3 rounded-xl hover:bg-gray-800">
+            <a href="/" class="block px-4 py-3 rounded-xl hover:bg-secondary transition">
                 📊 Dashboard
             </a>
 
-            <a href="/equipment/" class="block px-4 py-3 rounded-xl hover:bg-gray-800">
+            <a href="/equipment/" class="block px-4 py-3 rounded-xl hover:bg-secondary transition">
                 📦 Equipment
             </a>
 
-            <a href="/borrow/" class="block px-4 py-3 rounded-xl hover:bg-gray-800">
+            <a href="/borrow/" class="block px-4 py-3 rounded-xl hover:bg-secondary transition">
                 📄 Borrow Requests
             </a>
 
             {% if request.user.is_authenticated and request.user.is_superuser %}
-            <a href="/admin/" class="block px-4 py-3 rounded-xl hover:bg-gray-800">
+            <a href="/admin/" class="block px-4 py-3 rounded-xl hover:bg-secondary transition">
                 ⚙️ Admin Panel
             </a>
             {% endif %}
 
             <a href="/accounts/logout/"
-               class="block px-4 py-3 rounded-xl bg-red-500 hover:bg-red-600 mt-10 text-center font-semibold">
+               class="block px-4 py-3 rounded-xl bg-danger text-white hover:opacity-90 transition mt-10 text-center">
                 Logout
             </a>
 
         </nav>
-
     </aside>
 
     <!-- MAIN -->
-    <main class="ml-64 w-full min-h-screen">
+    <main class="ml-64 w-full min-h-screen bg-light">
 
-        <!-- HEADER -->
         <header class="bg-white shadow px-8 py-4 flex justify-between items-center">
-
             <div>
-                <h2 class="text-2xl font-bold text-gray-800">
-                    Equipment Borrowing System
-                </h2>
-                <p class="text-sm text-gray-500">
-                    Manage inventory and borrowing requests
-                </p>
+                <h2 class="text-2xl font-bold text-dark">Equipment Borrowing System</h2>
+                <p class="text-sm text-muted">Manage inventory and borrowing requests</p>
             </div>
 
             <div class="flex items-center gap-4">
-
-                <!-- THEME BUTTON -->
-                <button onclick="toggleTheme()"
-                        class="px-3 py-2 bg-gray-200 rounded-lg text-sm hover:bg-gray-300">
-                    🌗 Theme
-                </button>
-
-                <div class="text-right">
-                    <p class="font-semibold text-gray-700">
-                        {{ request.user.username }}
-                    </p>
-                </div>
-
-                <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+                <p class="font-semibold text-dark">{{ request.user.username }}</p>
+                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
                     {{ request.user.username|first|upper }}
                 </div>
-
             </div>
-
         </header>
 
-        <!-- CONTENT -->
         <div class="p-8">
 
-            <!-- TOAST MESSAGES -->
             {% if messages %}
-                <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-3">
-
-                    {% for message in messages %}
-                        <div class="toast-message px-5 py-3 rounded-xl shadow-lg text-white
-                            {% if message.tags == 'success' %} bg-green-500
-                            {% elif message.tags == 'error' %} bg-red-500
-                            {% else %} bg-yellow-500 {% endif %}
-                            opacity-0 translate-x-10 transition-all duration-300">
-
-                            {{ message }}
-
-                        </div>
-                    {% endfor %}
-
+            <div id="toastContainer" class="fixed top-5 right-5 space-y-3 z-50">
+                {% for message in messages %}
+                <div class="px-5 py-3 rounded-xl text-white shadow-lg
+                    {% if message.tags == 'success' %} bg-success
+                    {% elif message.tags == 'error' %} bg-danger
+                    {% else %} bg-warning {% endif %}">
+                    {{ message }}
                 </div>
+                {% endfor %}
+            </div>
             {% endif %}
 
             {% block content %}{% endblock %}
-
         </div>
 
-        <!-- FOOTER -->
-        <footer class="text-center text-gray-500 py-6 text-sm">
-            Equipment Borrowing System © 2026
+        <footer class="text-center text-muted py-6 text-sm">
+            Equipment System © 2026
         </footer>
 
     </main>
-
 </div>
 
-<!-- GLOBAL SCRIPTS -->
-<script>
-/* CONFIRM SYSTEM */
-function confirmAction(message) {
-    return confirm(message);
-}
-
-/* TOAST ANIMATION */
-document.addEventListener("DOMContentLoaded", function () {
-
-    const toasts = document.querySelectorAll(".toast-message");
-
-    toasts.forEach((toast, index) => {
-
-        setTimeout(() => {
-            toast.classList.remove("opacity-0", "translate-x-10");
-        }, 100);
-
-        setTimeout(() => {
-            toast.classList.add("opacity-0", "translate-x-10");
-
-            setTimeout(() => {
-                toast.remove();
-            }, 300);
-
-        }, 2500 + (index * 300));
-
-    });
-
-});
-</script>
+<!-- JS FILE -->
+<script src="{% static 'js/system.js' %}"></script>
 
 </body>
 </html>

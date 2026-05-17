@@ -1,0 +1,17 @@
+<span class="px-3 py-1 rounded-full text-white text-sm font-medium
+
+{% if type == 'available' or type == 'approved' %}
+bg-success
+
+{% elif type == 'pending' %}
+bg-warning
+
+{% elif type == 'borrowed' or type == 'returned' %}
+bg-primary
+
+{% else %}
+bg-danger
+{% endif %}
+">
+    {{ label }}
+</span>

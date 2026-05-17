@@ -11,18 +11,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
 SECRET_KEY = 'django-insecure-your-secret-key'
-
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
-# INSTALLED APPS
+# APPLICATIONS
 INSTALLED_APPS = [
-
-    # ⭐ ADMIN THEME
-    'jazzmin',
-
+    "jazzmin",
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,7 +71,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'equipment_system.wsgi.application'
 
 
-# DATABASE (MYSQL - LOCAL)
+# DATABASE (MYSQL)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -104,21 +100,16 @@ USE_I18N = True
 USE_TZ = True
 
 
-# STATIC FILES (CLEAN FIX)
+# =========================
+# STATIC FILES (FIXED)
+# =========================
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-# STATIC FILES (CLEAN FIX)
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-
-# ✅ ADD THIS (REQUIRED FOR collectstatic)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
@@ -131,15 +122,24 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
-# 🎨 JAZZMIN SETTINGS
 JAZZMIN_SETTINGS = {
-    "site_title": "Equipment System Admin",
-    "site_header": "Equipment Management",
+    "site_title": "Equipment System",
+    "site_header": "Equipment Admin",
     "site_brand": "Equipment System",
-    "welcome_sign": "Welcome Admin 👋",
-    "copyright": "Equipment Borrowing System",
+
+    "welcome_sign": "Welcome to Dashboard",
+
+       # 🚫 REMOVE FOOTER COMPLETELY
+    "show_footer": False,
 
     "show_sidebar": True,
     "navigation_expanded": True,
+
+    # 🔥 IMPORTANT FIX FOR COMPACT UI
+    "related_modal_active": True,
 }

@@ -1,0 +1,20 @@
+<div class="p-4 rounded-xl border mb-4
+
+{% if type == 'success' %}
+bg-success/10 text-success border-success/30
+
+{% elif type == 'danger' %}
+bg-danger/10 text-danger border-danger/30
+
+{% elif type == 'warning' %}
+bg-warning/10 text-warning border-warning/30
+
+{% else %}
+bg-accent text-dark border-primary/20
+{% endif %}
+">
+
+    <strong class="block font-semibold">{{ title }}</strong>
+    <p class="text-sm mt-1">{{ message }}</p>
+
+</div>

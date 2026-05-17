@@ -13,18 +13,10 @@ class BorrowRequest(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    equipment = models.ForeignKey(
-        Equipment,
-        on_delete=models.CASCADE
-    )
-
+    equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
-    # ✅ NEW
     borrow_date = models.DateField()
-
-    # ✅ NEW
     return_date = models.DateField()
 
     status = models.CharField(
@@ -37,3 +29,7 @@ class BorrowRequest(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.equipment.name}"
+
+    class Meta:
+        verbose_name = "Borrow Request"
+        verbose_name_plural = "Borrow Requests"

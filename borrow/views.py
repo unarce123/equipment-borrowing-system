@@ -9,9 +9,9 @@ from equipment.models import Equipment
 from accounts.utils import is_admin
 
 
-# ------------------------
-# BORROW LIST
-# ------------------------
+# =========================
+# BORROW LIST (SEARCH + FILTER)
+# =========================
 @login_required
 def borrow_list(request):
 
@@ -20,12 +20,30 @@ def borrow_list(request):
     else:
         requests = BorrowRequest.objects.filter(user=request.user)
 
-    return render(request, 'borrow/list.html', {'requests': requests})
+    # SEARCH (username OR equipment name)
+    search = request.GET.get('search')
+    if search:
+        requests = requests.filter(
+            user__username__icontains=search
+        ) | requests.filter(
+            equipment__name__icontains=search
+        )
+
+    # FILTER BY STATUS
+    status = request.GET.get('status')
+    if status and status != "all":
+        requests = requests.filter(status=status)
+
+    return render(request, 'borrow/list.html', {
+        'requests': requests,
+        'search': search,
+        'status': status
+    })
 
 
-# ------------------------
+# =========================
 # CREATE BORROW
-# ------------------------
+# =========================
 @login_required
 def create_borrow(request):
 
@@ -43,9 +61,9 @@ def create_borrow(request):
     return render(request, 'borrow/form.html', {'form': form})
 
 
-# ------------------------
+# =========================
 # APPROVE (ADMIN)
-# ------------------------
+# =========================
 @login_required
 @user_passes_test(is_admin)
 def approve_borrow(request, pk):
@@ -57,30 +75,23 @@ def approve_borrow(request, pk):
 
     equipment = borrow.equipment
 
-    # CHECK STOCK
     if borrow.quantity > equipment.quantity:
         messages.error(request, "Not enough stock available")
         return redirect('borrow_list')
 
-    # REDUCE STOCK
     equipment.quantity -= borrow.quantity
-    equipment.save()
-
-    # FORCE STATUS SYNC
-    equipment.refresh_from_db()
     equipment.save()
 
     borrow.status = 'approved'
     borrow.save()
 
     messages.success(request, "Borrow request approved")
-
     return redirect('borrow_list')
 
 
-# ------------------------
+# =========================
 # REJECT (ADMIN)
-# ------------------------
+# =========================
 @login_required
 @user_passes_test(is_admin)
 def reject_borrow(request, pk):
@@ -96,9 +107,9 @@ def reject_borrow(request, pk):
     return redirect('borrow_list')
 
 
-# ------------------------
-# RETURN ITEM (USER OR ADMIN)
-# ------------------------
+# =========================
+# RETURN ITEM
+# =========================
 @login_required
 def return_borrow(request, pk):
 
@@ -112,25 +123,19 @@ def return_borrow(request, pk):
 
     equipment = borrow.equipment
 
-    # RESTORE STOCK
     equipment.quantity += borrow.quantity
-    equipment.save()
-
-    # FORCE STATUS SYNC
-    equipment.refresh_from_db()
     equipment.save()
 
     borrow.status = 'returned'
     borrow.save()
 
     messages.success(request, "Equipment returned successfully")
-
     return redirect('borrow_list')
 
 
-# ------------------------
+# =========================
 # CANCEL REQUEST
-# ------------------------
+# =========================
 @login_required
 def delete_borrow(request, pk):
 

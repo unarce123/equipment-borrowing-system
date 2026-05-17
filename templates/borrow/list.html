@@ -1,137 +1,69 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <div class="flex justify-between items-center mb-6">
 
-    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200">
-        Borrow Requests
-    </h1>
+    <h1 class="text-3xl font-bold text-dark">Borrow Requests</h1>
 
-    <div class="flex items-center gap-3">
-
-        <a href="javascript:history.back()"
-           class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow">
-            ← Back
-        </a>
-
-        <a href="/borrow/create/"
-           class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl shadow">
-            Request Equipment
-        </a>
-
-    </div>
+    <a href="/borrow/create/"
+       class="px-4 py-2 rounded-xl bg-primary text-white hover:bg-secondary transition">
+        Request
+    </a>
 
 </div>
 
-<div class="bg-white dark:bg-slate-800 rounded-2xl shadow overflow-hidden">
+<div class="bg-white rounded-2xl shadow overflow-hidden">
 
 <table class="w-full">
 
-<thead class="bg-gray-100 dark:bg-slate-700">
+<thead class="bg-accent">
 <tr>
-    <th class="p-4 text-left text-gray-800 dark:text-gray-200">User</th>
-    <th class="p-4 text-left text-gray-800 dark:text-gray-200">Equipment</th>
-    <th class="p-4 text-left text-gray-800 dark:text-gray-200">Quantity</th>
-    <th class="p-4 text-left text-gray-800 dark:text-gray-200">Borrow Date</th>
-    <th class="p-4 text-left text-gray-800 dark:text-gray-200">Return Date</th>
-    <th class="p-4 text-left text-gray-800 dark:text-gray-200">Status</th>
-    <th class="p-4 text-left text-gray-800 dark:text-gray-200">Actions</th>
+    <th class="p-4">User</th>
+    <th class="p-4">Equipment</th>
+    <th class="p-4">Qty</th>
+    <th class="p-4">Borrow</th>
+    <th class="p-4">Return</th>
+    <th class="p-4">Status</th>
+    <th class="p-4">Actions</th>
 </tr>
 </thead>
 
 <tbody>
 
 {% for r in requests %}
-<tr class="border-b border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition">
+<tr class="border-b hover:bg-light">
 
-    <td class="p-4 text-gray-800 dark:text-gray-200">
-        {{ r.user.username }}
-    </td>
-
-    <td class="p-4 text-gray-800 dark:text-gray-200">
-        {{ r.equipment.name }}
-    </td>
-
-    <td class="p-4 text-gray-700 dark:text-gray-300">
-        {{ r.quantity }}
-    </td>
-
-    <td class="p-4 text-gray-700 dark:text-gray-300">
-        {{ r.borrow_date }}
-    </td>
-
-    <td class="p-4 text-gray-700 dark:text-gray-300">
-        {{ r.return_date }}
-    </td>
+    <td class="p-4">{{ r.user.username }}</td>
+    <td class="p-4">{{ r.equipment.name }}</td>
+    <td class="p-4">{{ r.quantity }}</td>
+    <td class="p-4">{{ r.borrow_date }}</td>
+    <td class="p-4">{{ r.return_date }}</td>
 
     <td class="p-4">
-
-        {% if r.status == 'pending' %}
-            <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">Pending</span>
-
-        {% elif r.status == 'approved' %}
-            <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm">Approved</span>
-
-        {% elif r.status == 'returned' %}
-            <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">Returned</span>
-
-        {% else %}
-            <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm">Rejected</span>
-        {% endif %}
-
+        {% include "components/badge.html" with type=r.status label=r.status %}
     </td>
 
-    <td class="p-4 space-x-3">
+    <td class="p-4 space-x-2">
 
-        {% if user.is_superuser %}
-
-            {% if r.status == 'pending' %}
-
-            <a href="/borrow/approve/{{ r.id }}/"
-               class="text-green-600 dark:text-green-400 hover:underline">
-                Approve
-            </a>
-
-            <a href="/borrow/reject/{{ r.id }}/"
-               onclick="return confirmAction('Reject this request?')"
-               class="text-red-600 dark:text-red-400 hover:underline">
-                Reject
-            </a>
-
-            {% endif %}
-
+        {% if user.is_superuser and r.status == 'pending' %}
+        <a href="/borrow/approve/{{ r.id }}/" class="text-success">Approve</a>
+        <a href="/borrow/reject/{{ r.id }}/" class="text-danger">Reject</a>
         {% endif %}
 
         {% if r.user == request.user and r.status == 'approved' %}
-
-        <a href="/borrow/return/{{ r.id }}/"
-           onclick="return confirmAction('Confirm return of this item?')"
-           class="text-blue-600 dark:text-blue-400 hover:underline">
-            Return
-        </a>
-
+        <a href="/borrow/return/{{ r.id }}/" class="text-primary">Return</a>
         {% endif %}
 
         {% if r.user == request.user and r.status == 'pending' %}
-
         <a href="/borrow/delete/{{ r.id }}/"
-           onclick="return confirmAction('Cancel this borrow request?')"
-           class="text-red-600 dark:text-red-400 hover:underline">
-            Cancel
+           onclick="return confirmAction('Cancel this request?')"
+           class="text-danger">
+           Cancel
         </a>
-
         {% endif %}
 
     </td>
 
-</tr>
-
-{% empty %}
-<tr>
-    <td colspan="7" class="p-8 text-center text-gray-500 dark:text-gray-400">
-        No borrow requests found.
-    </td>
 </tr>
 {% endfor %}
 

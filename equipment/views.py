@@ -5,17 +5,27 @@ from .forms import EquipmentForm
 from accounts.utils import is_staff, is_admin
 
 
+# =========================
+# EQUIPMENT LIST (SEARCH + FILTER)
+# =========================
 @login_required
 def equipment_list(request):
-    query = request.GET.get('q')
     items = Equipment.objects.all()
 
-    if query:
-        items = items.filter(name__icontains=query)
+    # SEARCH
+    search = request.GET.get('search')
+    if search:
+        items = items.filter(name__icontains=search)
+
+    # FILTER BY STATUS
+    status = request.GET.get('status')
+    if status and status != "all":
+        items = items.filter(status=status)
 
     return render(request, 'equipment/list.html', {
         'items': items,
-        'query': query
+        'search': search,
+        'status': status
     })
 
 

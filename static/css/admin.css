@@ -1,0 +1,262 @@
+/* =========================
+   MODERN APP ADMIN UI (FIXED + JAZZMIN COMPATIBLE)
+========================= */
+
+:root {
+    --bg: #0b1220;
+    --panel: #111a2e;
+    --card: #0f1b33;
+
+    --text: #237be0fd;
+    --muted: #94a3b8;
+
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+
+    --success: #10b981;
+    --danger: #ef4444;
+
+    --border: rgba(255,255,255,0.08);
+}
+
+/* =========================
+   GLOBAL RESET
+========================= */
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* =========================
+   REMOVE DEFAULT DJANGO FEEL
+========================= */
+#header,
+.breadcrumbs,
+.module caption {
+    display: none !important;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+#container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+#nav-sidebar {
+    width: 260px;
+    background: var(--panel) !important;
+    padding: 20px;
+    border-right: 1px solid var(--border);
+}
+
+#nav-sidebar a {
+    display: block;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    border-radius: 10px;
+    color: var(--muted) !important;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+#nav-sidebar a:hover {
+    background: rgba(79,70,229,0.15);
+    color: white !important;
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+#content {
+    flex: 1;
+    padding: 30px;
+}
+
+/* Dashboard title */
+#content::before {
+    content: "Admin Dashboard";
+    display: block;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* =========================
+   CARDS / MODULES
+========================= */
+.module {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+/* =========================
+   TABLES
+========================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th {
+    text-align: left;
+    padding: 12px;
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+}
+
+td {
+    padding: 12px;
+    border-top: 1px solid var(--border);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.button,
+input[type="submit"],
+.submit-row input {
+    background: var(--primary) !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 14px !important;
+    border-radius: 10px !important;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.button:hover,
+input[type="submit"]:hover {
+    background: var(--primary-hover) !important;
+}
+
+/* ADD BUTTON */
+.addlink {
+    background: var(--success) !important;
+    color: white !important;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+/* =========================
+   INPUTS (SAFE)
+========================= */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px !important;
+    border: 1px solid var(--border) !important;
+    background: rgba(255,255,255,0.03);
+    color: white;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.2);
+}
+
+/* =========================
+   MESSAGES
+========================= */
+.messagelist .success {
+    background: rgba(16,185,129,0.15) !important;
+    color: #34d399 !important;
+    border-radius: 10px;
+}
+
+.messagelist .error {
+    background: rgba(239,68,68,0.15) !important;
+    color: #f87171 !important;
+    border-radius: 10px;
+}
+
+/* =========================
+   FIXED PERMISSIONS UI (STABLE + DARK + VISIBLE)
+========================= */
+
+.selector {
+    display: block !important;
+    width: 100% !important;
+}
+
+/* Available + Chosen boxes */
+.selector-available,
+.selector-chosen {
+    width: 100% !important;
+    margin-bottom: 15px;
+
+    background: #0f1b33 !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    border-radius: 12px !important;
+
+    padding: 10px !important;
+}
+
+/* LIST BOX */
+.selector select {
+    width: 100% !important;
+    height: 240px !important;
+
+    background: #0b1220 !important;
+    color: white !important;
+
+    border: none !important;
+    outline: none !important;
+}
+
+/* OPTIONS */
+.selector option {
+    background: #0b1220 !important;
+    color: white !important;
+}
+
+/* SEARCH FILTER */
+.selector .selector-filter {
+    display: block !important;
+}
+
+/* MOVE BUTTONS (hide for clean UI) */
+.selector .selector-chooser {
+    display: none !important;
+}
+
+/* =========================
+   FIX: "0 selected options..." (FORCED BLUE)
+========================= */
+
+.selector p,
+.selector .help,
+.selector .selector-chosen,
+.selector .selector-available {
+    color: #3b82f6 !important;
+}
+
+/* EXTRA STRONG TARGET (Django selector text) */
+.selector .selector-chosen * ,
+.selector .selector-available * {
+    color: #3b82f6 !important;
+}
+
+/* Specifically force help text */
+.selector .help {
+    color: #3b82f6 !important;
+    font-weight: 500 !important;
+}
+
