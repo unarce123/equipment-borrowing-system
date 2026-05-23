@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto">
+
+    <div class="bg-white rounded-2xl shadow p-6">
+
+        <h1 class="text-2xl font-bold text-dark mb-6">
+            Notifications
+        </h1>
+
+        {% for n in notifs %}
+
+            <div class="p-4 mb-3 rounded-xl border
+                {% if not n.is_read %} bg-blue-50 border-blue-200 {% else %} bg-gray-50 border-gray-200 {% endif %}">
+
+                <div class="flex justify-between items-start">
+
+                    <div>
+                        <p class="text-dark font-medium">
+                            {{ n.message }}
+                        </p>
+
+                        <small class="text-muted">
+                            {{ n.created_at|date:"M d, Y - H:i" }}
+                        </small>
+                    </div>
+
+                    <!-- Type badge -->
+                    <span class="text-xs px-3 py-1 rounded-full
+                        {% if n.notif_type == 'approval' %} bg-green-100 text-green-700
+                        {% elif n.notif_type == 'reject' %} bg-red-100 text-red-700
+                        {% elif n.notif_type == 'return' %} bg-blue-100 text-blue-700
+                        {% elif n.notif_type == 'borrow' %} bg-yellow-100 text-yellow-700
+                        {% else %} bg-gray-100 text-gray-700 {% endif %}">
+                        {{ n.notif_type }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="text-center text-muted py-10">
+                No notifications yet.
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

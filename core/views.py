@@ -11,27 +11,33 @@ def dashboard(request):
 
     today = timezone.now().date()
 
-    # USER NOTIFICATIONS
-    due_today = BorrowRequest.objects.filter(
-        user=request.user,
-        return_date=today,
-        status='approved'
-    )
+    # REMOVE ALL RETURNED ITEMS FIRST (MAIN FIX)
+    active_borrows = BorrowRequest.objects.filter(
+        user=request.user
+    ).exclude(status='returned')
 
-    overdue_items = BorrowRequest.objects.filter(
-        user=request.user,
-        return_date__lt=today,
-        status='approved'
-    )
+    # DUE TODAY (only active + approved)
+    due_today = active_borrows.filter(
+        status='approved',
+        return_date=today
+    ).exists()
+
+    # OVERDUE (only active + approved)
+    overdue_items = active_borrows.filter(
+        status='approved',
+        return_date__lt=today
+    ).exists()
 
     context = {
 
+        # INVENTORY
         'total_equipment': Equipment.objects.count(),
 
         'available_equipment': Equipment.objects.filter(
             quantity__gt=0
         ).count(),
 
+        # REQUEST COUNTS
         'pending_requests': BorrowRequest.objects.filter(
             status='pending'
         ).count(),
@@ -44,7 +50,7 @@ def dashboard(request):
             status='returned'
         ).count(),
 
-        # NOTIFICATIONS
+        # ALERTS (FIXED)
         'due_today': due_today,
         'overdue_items': overdue_items,
     }

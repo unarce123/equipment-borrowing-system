@@ -1,6 +1,6 @@
-/* =========================
-   MODERN APP ADMIN UI (FIXED + JAZZMIN COMPATIBLE)
-========================= */
+/* 
+   MODERN APP ADMIN UI
+ */
 
 :root {
     --bg: #0b1220;
@@ -19,9 +19,9 @@
     --border: rgba(255,255,255,0.08);
 }
 
-/* =========================
+/* 
    GLOBAL RESET
-========================= */
+ */
 body {
     margin: 0;
     font-family: "Segoe UI", sans-serif;
@@ -29,26 +29,26 @@ body {
     color: var(--text);
 }
 
-/* =========================
+/* 
    REMOVE DEFAULT DJANGO FEEL
-========================= */
+ */
 #header,
 .breadcrumbs,
 .module caption {
     display: none !important;
 }
 
-/* =========================
+/* 
    LAYOUT
-========================= */
+*/
 #container {
     display: flex;
     min-height: 100vh;
 }
 
-/* =========================
+/*
    SIDEBAR
-========================= */
+ */
 #nav-sidebar {
     width: 260px;
     background: var(--panel) !important;
@@ -71,9 +71,9 @@ body {
     color: white !important;
 }
 
-/* =========================
+/* 
    MAIN CONTENT
-========================= */
+ */
 #content {
     flex: 1;
     padding: 30px;
@@ -88,9 +88,9 @@ body {
     margin-bottom: 20px;
 }
 
-/* =========================
+/* 
    CARDS / MODULES
-========================= */
+ */
 .module {
     background: var(--card);
     border: 1px solid var(--border);
@@ -99,9 +99,9 @@ body {
     margin-bottom: 18px;
 }
 
-/* =========================
+/*
    TABLES
-========================= */
+ */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -122,9 +122,9 @@ td {
     border-top: 1px solid var(--border);
 }
 
-/* =========================
+/*
    BUTTONS
-========================= */
+ */
 .button,
 input[type="submit"],
 .submit-row input {
@@ -150,9 +150,9 @@ input[type="submit"]:hover {
     border-radius: 8px;
 }
 
-/* =========================
+/*
    INPUTS (SAFE)
-========================= */
+ */
 input,
 select,
 textarea {
@@ -172,9 +172,9 @@ textarea:focus {
     box-shadow: 0 0 0 3px rgba(79,70,229,0.2);
 }
 
-/* =========================
+/* 
    MESSAGES
-========================= */
+ */
 .messagelist .success {
     background: rgba(16,185,129,0.15) !important;
     color: #34d399 !important;
@@ -187,9 +187,9 @@ textarea:focus {
     border-radius: 10px;
 }
 
-/* =========================
-   FIXED PERMISSIONS UI (STABLE + DARK + VISIBLE)
-========================= */
+/* 
+   FIXED PERMISSIONS UI
+ */
 
 .selector {
     display: block !important;
@@ -232,14 +232,14 @@ textarea:focus {
     display: block !important;
 }
 
-/* MOVE BUTTONS (hide for clean UI) */
+/* MOVE BUTTONS */
 .selector .selector-chooser {
     display: none !important;
 }
 
-/* =========================
-   FIX: "0 selected options..." (FORCED BLUE)
-========================= */
+/* 
+   FIX
+ */
 
 .selector p,
 .selector .help,
@@ -248,7 +248,7 @@ textarea:focus {
     color: #3b82f6 !important;
 }
 
-/* EXTRA STRONG TARGET (Django selector text) */
+/* EXTRA STRONG TARGET */
 .selector .selector-chosen * ,
 .selector .selector-available * {
     color: #3b82f6 !important;
@@ -259,4 +259,8 @@ textarea:focus {
     color: #3b82f6 !important;
     font-weight: 500 !important;
 }
+
+
+
+
 

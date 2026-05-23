@@ -1,3 +1,5 @@
+<!-- borrow/list.html -->
+
 {% extends 'base.html' %}
 {% block content %}
 
@@ -12,58 +14,81 @@
 
 </div>
 
-<div class="bg-white rounded-2xl shadow overflow-hidden">
+<div class="bg-white rounded-2xl shadow overflow-hidden border border-gray-200">
 
-<table class="w-full">
+<table class="w-full text-center border border-gray-200">
 
 <thead class="bg-accent">
 <tr>
-    <th class="p-4">User</th>
-    <th class="p-4">Equipment</th>
-    <th class="p-4">Qty</th>
-    <th class="p-4">Borrow</th>
-    <th class="p-4">Return</th>
-    <th class="p-4">Status</th>
-    <th class="p-4">Actions</th>
+    <th class="p-4 border border-gray-200">User</th>
+    <th class="p-4 border border-gray-200">Equipment</th>
+    <th class="p-4 border border-gray-200">Qty</th>
+    <th class="p-4 border border-gray-200">Borrow</th>
+    <th class="p-4 border border-gray-200">Return</th>
+    <th class="p-4 border border-gray-200">Status</th>
+    <th class="p-4 border border-gray-200">Actions</th>
 </tr>
 </thead>
 
 <tbody>
 
 {% for r in requests %}
-<tr class="border-b hover:bg-light">
+<tr class="hover:bg-light transition">
 
-    <td class="p-4">{{ r.user.username }}</td>
-    <td class="p-4">{{ r.equipment.name }}</td>
-    <td class="p-4">{{ r.quantity }}</td>
-    <td class="p-4">{{ r.borrow_date }}</td>
-    <td class="p-4">{{ r.return_date }}</td>
+    <td class="p-4 border border-gray-200">{{ r.user.username }}</td>
+    <td class="p-4 border border-gray-200">{{ r.equipment.name }}</td>
+    <td class="p-4 border border-gray-200">{{ r.quantity }}</td>
+    <td class="p-4 border border-gray-200">{{ r.borrow_date }}</td>
+    <td class="p-4 border border-gray-200">{{ r.return_date }}</td>
 
-    <td class="p-4">
+    <td class="p-4 border border-gray-200">
         {% include "components/badge.html" with type=r.status label=r.status %}
     </td>
 
-    <td class="p-4 space-x-2">
+    <td class="p-4 border border-gray-200">
 
-        {% if user.is_superuser and r.status == 'pending' %}
-        <a href="/borrow/approve/{{ r.id }}/" class="text-success">Approve</a>
-        <a href="/borrow/reject/{{ r.id }}/" class="text-danger">Reject</a>
-        {% endif %}
+        <div class="flex flex-wrap justify-center gap-2">
 
-        {% if r.user == request.user and r.status == 'approved' %}
-        <a href="/borrow/return/{{ r.id }}/" class="text-primary">Return</a>
-        {% endif %}
+            {% if user.is_staff and r.status == 'pending' %}
+            <a href="/borrow/approve/{{ r.id }}/"
+               class="px-3 py-1 rounded-full bg-success text-white text-sm hover:opacity-90 transition">
+                Approve
+            </a>
 
-        {% if r.user == request.user and r.status == 'pending' %}
-        <a href="/borrow/delete/{{ r.id }}/"
-           onclick="return confirmAction('Cancel this request?')"
-           class="text-danger">
-           Cancel
-        </a>
-        {% endif %}
+            <a href="/borrow/reject/{{ r.id }}/"
+               class="px-3 py-1 rounded-full bg-danger text-white text-sm hover:opacity-90 transition">
+                Reject
+            </a>
+            {% endif %}
+
+            {% if user.is_staff and r.status == 'approved' %}
+            <a href="/borrow/return/{{ r.id }}/"
+               class="px-3 py-1 rounded-full bg-primary text-white text-sm hover:opacity-90 transition">
+                Return
+            </a>
+            {% endif %}
+
+            {% if r.user == request.user and r.status == 'pending' %}
+
+            <a href="/borrow/delete/{{ r.id }}/"
+               data-confirm="Cancel this request?"
+               class="px-3 py-1 rounded-full bg-danger text-white text-sm hover:opacity-90 transition">
+                Cancel
+            </a>
+
+            {% endif %}
+
+        </div>
 
     </td>
 
+</tr>
+
+{% empty %}
+<tr>
+    <td colspan="7" class="p-6 text-gray-500 text-center border border-gray-200">
+        No borrow requests found.
+    </td>
 </tr>
 {% endfor %}
 
@@ -72,5 +97,29 @@
 </table>
 
 </div>
+
+{% if requests.has_other_pages %}
+<div class="flex justify-center mt-6 space-x-2">
+
+    {% if requests.has_previous %}
+    <a href="?page={{ requests.previous_page_number }}"
+       class="px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">
+        Prev
+    </a>
+    {% endif %}
+
+    <span class="px-4 py-2 bg-primary text-white rounded-lg">
+        Page {{ requests.number }} / {{ requests.paginator.num_pages }}
+    </span>
+
+    {% if requests.has_next %}
+    <a href="?page={{ requests.next_page_number }}"
+       class="px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">
+        Next
+    </a>
+    {% endif %}
+
+</div>
+{% endif %}
 
 {% endblock %}

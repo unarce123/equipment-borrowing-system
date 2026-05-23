@@ -10,6 +10,35 @@
             Request Equipment
         </h1>
 
+        <!-- 
+             CATEGORY FILTER
+         -->
+        <form method="GET" class="mb-6">
+
+            <label class="block mb-2 font-semibold text-gray-700">
+                Category Filter
+            </label>
+
+            <select name="category"
+                class="w-full p-3 border rounded-xl"
+                onchange="this.form.submit()">
+
+                <option value="">All Categories</option>
+
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}"
+                        {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
+                        {{ cat.name }}
+                    </option>
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+        <!-- 
+             BORROW FORM
+        -->
         <form method="POST" class="space-y-5">
 
             {% csrf_token %}
@@ -74,8 +103,7 @@
                 {% endif %}
             </div>
 
-            <button
-                class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow transition">
+            <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow transition">
                 Submit Request
             </button>
 

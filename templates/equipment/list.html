@@ -10,56 +10,105 @@
 
 </div>
 
-<!-- SEARCH BOX (MEMBER 1) -->
-<div class="mb-4">
-    <input
-        id="searchInput"
-        type="text"
+<!-- SEARCH + FILTERS -->
+<form method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+    <input type="text" name="search"
+        value="{{ search|default:'' }}"
         placeholder="Search equipment..."
-        onkeyup="searchEquipment()"
-        class="w-full p-3 border rounded-xl"
-    >
-</div>
+        class="w-full p-3 border border-gray-300 rounded-xl text-center">
 
-<div class="bg-white rounded-2xl shadow overflow-hidden">
+    <select name="category" class="w-full p-3 border border-gray-300 rounded-xl text-center">
+        <option value="all">All Categories</option>
+        {% for cat in categories %}
+        <option value="{{ cat.id }}"
+            {% if category == cat.id|stringformat:"s" %}selected{% endif %}>
+            {{ cat.name }}
+        </option>
+        {% endfor %}
+    </select>
 
-<table class="w-full">
+    <select name="status" class="w-full p-3 border border-gray-300 rounded-xl text-center">
+        <option value="all">All Status</option>
+        <option value="available" {% if status == 'available' %}selected{% endif %}>Available</option>
+        <option value="borrowed" {% if status == 'borrowed' %}selected{% endif %}>Borrowed</option>
+        <option value="damaged" {% if status == 'damaged' %}selected{% endif %}>Damaged</option>
+    </select>
+
+    <button type="submit"
+        class="bg-primary text-white px-4 py-3 rounded-xl hover:opacity-90 transition">
+        Filter
+    </button>
+
+</form>
+
+<!-- TABLE -->
+<div class="bg-white rounded-2xl shadow overflow-hidden border border-gray-200">
+
+<table class="w-full text-center border border-gray-200">
 
 <thead class="bg-accent">
 <tr>
-    <th class="p-4">Equipment</th>
-    <th class="p-4">Quantity</th>
-    <th class="p-4">Status</th>
-    <th class="p-4">Actions</th>
+    <th class="p-4 border border-gray-200">Equipment</th>
+    <th class="p-4 border border-gray-200">Category</th>
+    <th class="p-4 border border-gray-200">Quantity</th>
+    <th class="p-4 border border-gray-200">Status</th>
+    <th class="p-4 border border-gray-200">Actions</th>
 </tr>
 </thead>
 
 <tbody>
 
 {% for item in items %}
-<tr class="border-b hover:bg-light equipment-item">
+<tr class="hover:bg-light transition">
 
-    <td class="p-4 font-semibold">{{ item.name }}</td>
-    <td class="p-4">{{ item.quantity }}</td>
+    <td class="p-4 border border-gray-200 font-semibold">
+        {{ item.name }}
+    </td>
 
-    <td class="p-4">
+    <td class="p-4 border border-gray-200">
+        {{ item.category.name }}
+    </td>
+
+    <td class="p-4 border border-gray-200">
+        {{ item.quantity }}
+    </td>
+
+    <td class="p-4 border border-gray-200">
         {% include "components/badge.html" with type=item.status label=item.status %}
     </td>
 
-    <td class="p-4 space-x-3">
+    <td class="p-4 border border-gray-200">
 
-        {% if request.user.userprofile.role in 'admin staff' %}
-        <a href="/equipment/edit/{{ item.id }}/" class="text-primary">Edit</a>
+        <div class="flex justify-center gap-2">
 
-        <a href="/equipment/delete/{{ item.id }}/"
-           onclick="return confirmAction('Delete this item?')"
-           class="text-danger">
-           Delete
-        </a>
-        {% endif %}
+            {% if request.user.userprofile.role in 'admin staff' %}
+
+            <a href="/equipment/edit/{{ item.id }}/"
+               class="px-3 py-1 rounded-full bg-primary text-white text-sm hover:opacity-90 transition">
+                Edit
+            </a>
+
+            <!-- FIXED DELETE -->
+            <a href="/equipment/delete/{{ item.id }}/"
+               data-confirm="Delete this item?"
+               class="px-3 py-1 rounded-full bg-danger text-white text-sm hover:opacity-90 transition">
+                Delete
+            </a>
+
+            {% endif %}
+
+        </div>
 
     </td>
 
+</tr>
+
+{% empty %}
+<tr>
+    <td colspan="5" class="p-6 text-gray-500 text-center border border-gray-200">
+        No equipment found.
+    </td>
 </tr>
 {% endfor %}
 
@@ -68,5 +117,40 @@
 </table>
 
 </div>
+
+{% if items.has_other_pages %}
+<div class="flex justify-center mt-6 space-x-2 flex-wrap">
+
+    {% if items.has_previous %}
+    <a href="?page={{ items.previous_page_number }}&search={{ search|default:'' }}&category={{ category|default:'all' }}&status={{ status|default:'all' }}"
+       class="px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition">
+        Prev
+    </a>
+    {% endif %}
+
+    {% for num in items.paginator.page_range %}
+
+        {% if num == items.number %}
+            <span class="px-4 py-2 rounded-lg bg-primary text-white font-semibold">
+                {{ num }}
+            </span>
+        {% else %}
+            <a href="?page={{ num }}&search={{ search|default:'' }}&category={{ category|default:'all' }}&status={{ status|default:'all' }}"
+               class="px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition">
+                {{ num }}
+            </a>
+        {% endif %}
+
+    {% endfor %}
+
+    {% if items.has_next %}
+    <a href="?page={{ items.next_page_number }}&search={{ search|default:'' }}&category={{ category|default:'all' }}&status={{ status|default:'all' }}"
+       class="px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition">
+        Next
+    </a>
+    {% endif %}
+
+</div>
+{% endif %}
 
 {% endblock %}

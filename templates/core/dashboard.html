@@ -3,39 +3,96 @@
 
 <div class="mb-8">
     <h1 class="text-3xl font-bold text-dark">Dashboard</h1>
-    <p class="text-muted mt-2">Monitor equipment inventory and borrowing activities.</p>
+    <p class="text-muted mt-2">
+        Monitor equipment inventory and borrowing activities.
+    </p>
 </div>
 
 <!-- ALERTS -->
 {% if due_today %}
-{% include "components/alert.html" with type="warning" title="Due Today" message="Check equipment that must be returned today." %}
+    {% include "components/alert.html" with type="warning" title="Due Today" message="Check equipment that must be returned today." %}
 {% endif %}
 
 {% if overdue_items %}
-{% include "components/alert.html" with type="danger" title="Overdue Items" message="Some equipment is overdue." %}
+    {% include "components/alert.html" with type="danger" title="Overdue Items" message="Some equipment is overdue." %}
 {% endif %}
 
-<!-- CARDS -->
+<!-- STATS CARDS -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-    <div class="bg-white p-6 rounded-2xl shadow">
-        <p class="text-muted">Total Equipment</p>
-        <h2 class="text-3xl font-bold text-primary">{{ total_equipment }}</h2>
+    <!-- TOTAL EQUIPMENT -->
+    <div class="bg-white p-6 rounded-2xl shadow
+                hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02]
+                transition-all duration-300 cursor-pointer">
+
+        <p class="text-muted text-sm font-medium">
+            Total Equipment
+        </p>
+
+        <h2 class="text-3xl font-bold text-primary mt-2">
+            {{ total_equipment }}
+        </h2>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow">
-        <p class="text-muted">Pending</p>
-        <h2 class="text-3xl font-bold text-warning">{{ pending_requests }}</h2>
+    <!-- AVAILABLE EQUIPMENT -->
+    <div class="bg-white p-6 rounded-2xl shadow
+                hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02]
+                transition-all duration-300 cursor-pointer">
+
+        <p class="text-muted text-sm font-medium">
+            Available Equipment
+        </p>
+
+        <h2 class="text-3xl font-bold text-success mt-2">
+            {{ available_equipment }}
+        </h2>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow">
-        <p class="text-muted">Approved</p>
-        <h2 class="text-3xl font-bold text-success">{{ approved_requests }}</h2>
+    <!-- PENDING REQUESTS -->
+    <div class="bg-white p-6 rounded-2xl shadow
+                hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02]
+                transition-all duration-300 cursor-pointer">
+
+        <p class="text-muted text-sm font-medium">
+            Pending Requests
+        </p>
+
+        <h2 class="text-3xl font-bold text-warning mt-2">
+            {{ pending_requests }}
+        </h2>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow">
-        <p class="text-muted">Returned</p>
-        <h2 class="text-3xl font-bold text-secondary">{{ returned_requests }}</h2>
+    <!-- APPROVED REQUESTS -->
+    <div class="bg-white p-6 rounded-2xl shadow
+                hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02]
+                transition-all duration-300 cursor-pointer">
+
+        <p class="text-muted text-sm font-medium">
+            Approved Requests
+        </p>
+
+        <h2 class="text-3xl font-bold text-info mt-2">
+            {{ approved_requests }}
+        </h2>
+    </div>
+
+</div>
+
+<!-- SECOND ROW -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+
+    <!-- RETURNED REQUESTS -->
+    <div class="bg-white p-6 rounded-2xl shadow
+                hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02]
+                transition-all duration-300 cursor-pointer">
+
+        <p class="text-muted text-sm font-medium">
+            Returned Requests
+        </p>
+
+        <h2 class="text-3xl font-bold text-secondary mt-2">
+            {{ returned_requests }}
+        </h2>
     </div>
 
 </div>

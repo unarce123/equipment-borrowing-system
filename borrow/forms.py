@@ -1,13 +1,24 @@
 from django import forms
 from .models import BorrowRequest
+from equipment.models import Equipment, Category
 
 
 class BorrowRequestForm(forms.ModelForm):
+
+    # CATEGORY
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'w-full p-3 border rounded-xl'
+        })
+    )
 
     class Meta:
         model = BorrowRequest
 
         fields = [
+            'category',
             'equipment',
             'quantity',
             'borrow_date',
@@ -15,16 +26,50 @@ class BorrowRequestForm(forms.ModelForm):
         ]
 
         widgets = {
+
+            'equipment': forms.Select(attrs={
+                'class': 'w-full p-3 border rounded-xl'
+            }),
+
+            'quantity': forms.NumberInput(attrs={
+                'class': 'w-full p-3 border rounded-xl'
+            }),
+
             'borrow_date': forms.DateInput(
-                attrs={'type': 'date'}
+                attrs={
+                    'type': 'date',
+                    'class': 'w-full p-3 border rounded-xl'
+                }
             ),
 
             'return_date': forms.DateInput(
-                attrs={'type': 'date'}
+                attrs={
+                    'type': 'date',
+                    'class': 'w-full p-3 border rounded-xl'
+                }
             ),
         }
 
-    # ✅ VALIDATE QUANTITY
+    # FILTER EQUIPMENT BY CATEGORY
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        self.fields['equipment'].queryset = Equipment.objects.all()
+
+        if 'category' in self.data:
+
+            try:
+                category_id = int(self.data.get('category'))
+
+                self.fields['equipment'].queryset = Equipment.objects.filter(
+                    category_id=category_id
+                )
+
+            except (ValueError, TypeError):
+                pass
+
+    # VALIDATE QUANTITY
     def clean_quantity(self):
 
         quantity = self.cleaned_data.get('quantity')

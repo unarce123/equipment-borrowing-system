@@ -1,6 +1,6 @@
-// =========================
-// MEMBER 1 - LIVE SEARCH
-// =========================
+
+// LIVE SEARCH - UNARCE
+
 function searchEquipment() {
     let input = document.getElementById("searchInput").value.toLowerCase();
     let items = document.getElementsByClassName("equipment-item");
@@ -12,17 +12,32 @@ function searchEquipment() {
 }
 
 
-// =========================
-// MEMBER 2 - CONFIRM ACTION
-// =========================
-function confirmAction(msg) {
-    return confirm(msg);
-}
+
+// CONFIRM SYSTEM - UTINAS
 
 
-// =========================
-// MEMBER 3 - AUTO HIDE TOAST
-// =========================
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll("a[data-confirm]").forEach(link => {
+
+        link.addEventListener("click", function (e) {
+
+            const message = this.getAttribute("data-confirm") || "Are you sure?";
+
+            if (!confirm(message)) {
+                e.preventDefault();
+            }
+
+        });
+
+    });
+
+});
+
+
+
+// AUTO HIDE TOAST - VILLAREAL
+
 setTimeout(() => {
     let toasts = document.querySelectorAll("#toastContainer > div");
 

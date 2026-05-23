@@ -30,6 +30,24 @@ class BorrowRequest(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.equipment.name}"
 
-    class Meta:
-        verbose_name = "Borrow Request"
-        verbose_name_plural = "Borrow Requests"
+
+
+# NOTIFICATION MODEL
+class Notification(models.Model):
+
+    TYPE_CHOICES = [
+        ('borrow', 'Borrow'),
+        ('approval', 'Approval'),
+        ('reject', 'Reject'),
+        ('return', 'Return'),
+        ('system', 'System'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")
+    message = models.TextField()
+    notif_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='system')
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.message}"

@@ -74,16 +74,29 @@
     <main class="ml-64 w-full min-h-screen bg-light">
 
         <header class="bg-white shadow px-8 py-4 flex justify-between items-center">
+
             <div>
                 <h2 class="text-2xl font-bold text-dark">Equipment Borrowing System</h2>
                 <p class="text-sm text-muted">Manage inventory and borrowing requests</p>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-6">
+
+                <a href="{% url 'notifications' %}" class="relative text-dark text-2xl">
+                    🔔
+                    {% if unread_notifications > 0 %}
+                        <span class="absolute -top-2 -right-2 bg-danger text-xs px-2 py-1 rounded-full text-white">
+                            {{ unread_notifications }}
+                        </span>
+                    {% endif %}
+                </a>
+
                 <p class="font-semibold text-dark">{{ request.user.username }}</p>
+
                 <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
                     {{ request.user.username|first|upper }}
                 </div>
+
             </div>
         </header>
 
@@ -112,7 +125,7 @@
     </main>
 </div>
 
-<!-- JS FILE -->
+<!--  JS -->
 <script src="{% static 'js/system.js' %}"></script>
 
 </body>
